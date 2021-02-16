@@ -6,7 +6,8 @@ namespace CrowCount.Models
 {
     public interface IDay
     {
-        int CrowsCount { get; set; }
+        IList<ICrow> Crows { get; }
+        int CrowsCount { get; }
         int Temperature { get; set; }
         string Crop { get; set; }
         PartOfDay PartOfDay { get; set; }

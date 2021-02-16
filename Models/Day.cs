@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CrowCount.Enums;
 
@@ -9,8 +10,8 @@ namespace CrowCount.Models
     {
         #region Constants
         private const int minDays = 1;
-        private const int maxCrowsCount = 40;
-        private const int minCrowsCount = 0;
+        // private const int maxCrowsCount = 40;
+        // private const int minCrowsCount = 15;
         private const int maxTemperature = 35;
         private const int minTemperature = -20;
         private const int morning = 7;
@@ -31,24 +32,22 @@ namespace CrowCount.Models
         }
 
         public Day(
-            int crowsCount,
             int temperature,
             PartOfDay partOfDay,
             Weather weather,
-            TimeSpan timeStamp)
+            TimeSpan timeStamp,
+            IList<ICrow> crows)
         {
-            CrowsCount = crowsCount;
             Temperature = temperature;
             PartOfDay = partOfDay;
             Weather = weather;
             TimeStamp = timeStamp;
+            Crows = crows;
         }
 
         #region Properties
-        // unused
-        public IList<ICrow> Crows { get; set; }
-
-        public int CrowsCount { get; set; }
+        public IList<ICrow> Crows { get; private set; }
+        public int CrowsCount => Crows.Count;
         public int Temperature { get; set; }
         public PartOfDay PartOfDay { get; set; }
         public Weather Weather { get; set; }
@@ -74,8 +73,10 @@ namespace CrowCount.Models
         private static IDay CreateRandomDay()
         {
             Random random = new Random();
+            var crowsPool = new CrowPool();
+            var crows = crowsPool.GetCrows(crowsPool.Crows);
 
-            int crowsCount = random.Next(minCrowsCount, maxCrowsCount);
+            int crowsCount = crows.Count;
             int temperature = random.Next(minTemperature, maxTemperature);
 
             PartOfDay partOfDay = (PartOfDay) random.Next(Enum.GetValues<PartOfDay>().Length);
@@ -93,7 +94,7 @@ namespace CrowCount.Models
                 temperature = random.Next(minTemperature, 0);
             }
 
-            return new Day(crowsCount, temperature, partOfDay, weather, timeStamp);
+            return new Day(temperature, partOfDay, weather, timeStamp, crows);
         }
 
         public static IList<IDay> CreateRandomDays(int count)
@@ -115,12 +116,14 @@ namespace CrowCount.Models
 
         public override string ToString()
         {
-            StringBuilder str = new();
+            StringBuilder str = new StringBuilder();
 
             str.AppendLine($"Today was a {Weather} day.");
             str.AppendLine($"You decided to visit field at {PartOfDay}, at {TimeStamp}.");
             str.AppendLine($"You noticed {CrowsCount} crows today.");
             str.AppendLine($"The temperature was {Temperature}");
+            // str.AppendLine($"{Crows.Where(c => c.IsDead).Count()} crows died today.");
+            str.AppendLine($"{Crows.Where(c => c.IsHungry && !c.IsDead).Count()} crows are still hungry.");
 
             return str.ToString();
         }

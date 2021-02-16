@@ -24,7 +24,7 @@ namespace CrowCount
         public IList<IDay> Days { get; private set; }
         public IList<string> Crops { get; set; }
 
-        private readonly Random random = new();
+        private readonly Random random = new Random();
         private int nextDay = 0;
 
         // main method
@@ -32,7 +32,7 @@ namespace CrowCount
         {
             foreach (var day in Day.CreateRandomDays(DaysCount))
             {
-                StringBuilder str = new(day.ToString());
+                StringBuilder str = new StringBuilder(day.ToString());
 
                 day.Crop = Crops[random.Next(Crops.Count)];
 
@@ -67,7 +67,7 @@ namespace CrowCount
                 }
             }
 
-            StringBuilder result = new();
+            StringBuilder result = new StringBuilder();
 
             var min = Days[minElementIndex];
             var max = Days[maxElementIndex];
