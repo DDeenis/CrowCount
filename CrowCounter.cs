@@ -14,7 +14,7 @@ namespace CrowCount
             TimeoutSeconds = timeoutSeconds;
             Crops = new List<string>
             {
-                "cucumbers", "wheat", "corn", "cotton", "rice", "soybean", "peanuts", "sunflowers", "lentil", "tobacco", "shugar beet"
+                "cucumber", "wheat", "corn", "cotton", "rice", "soybean", "peanut", "sunflower", "lentil", "tobacco", "shugar beet"
             };
             Days = new List<IDay>();
         }

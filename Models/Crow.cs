@@ -12,7 +12,7 @@ namespace CrowCount.Models
         {
             var random = new Random();
 
-            Color = random.Next(10) == 0 ? "white" : "black";
+            Color = random.Next(20) == 0 ? "white" : "black";
             Age = random.Next(minCrowAge);
             IsHungry = random.Next(9) < 2 ? true : false;
         }

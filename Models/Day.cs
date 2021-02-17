@@ -53,6 +53,8 @@ namespace CrowCount.Models
         public Weather Weather { get; set; }
         public TimeSpan TimeStamp { get; set; }
         public string Crop { get; set; }
+
+        public static CrowPool CrowPool { get; private set; } = new CrowPool();
         #endregion
 
         private static TimeSpan GetRandomTimeSpan(PartOfDay partOfDay, Random random) => partOfDay switch
@@ -73,8 +75,7 @@ namespace CrowCount.Models
         private static IDay CreateRandomDay()
         {
             Random random = new Random();
-            var crowsPool = new CrowPool();
-            var crows = crowsPool.GetCrows(crowsPool.Crows);
+            var crows = CrowPool.GetCrows(CrowPool.Crows);
 
             int crowsCount = crows.Count;
             int temperature = random.Next(minTemperature, maxTemperature);
@@ -120,7 +121,7 @@ namespace CrowCount.Models
 
             str.AppendLine($"Today was a {Weather} day.");
             str.AppendLine($"You decided to visit field at {PartOfDay}, at {TimeStamp}.");
-            str.AppendLine($"You noticed {CrowsCount} crows today.");
+            str.AppendLine($"You noticed {CrowsCount} crows today ({Crows.Where(c => c.Color == "black").Count()} black and {Crows.Where(c => c.Color == "white").Count()} white).");
             str.AppendLine($"The temperature was {Temperature}");
             // str.AppendLine($"{Crows.Where(c => c.IsDead).Count()} crows died today.");
             str.AppendLine($"{Crows.Where(c => c.IsHungry && !c.IsDead).Count()} crows are still hungry.");
