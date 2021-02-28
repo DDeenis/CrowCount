@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using CrowCount.Models;
@@ -71,9 +72,15 @@ namespace CrowCount
 
             var min = Days[minElementIndex];
             var max = Days[maxElementIndex];
+            var crowsAlive = Day.CrowPool.Crows.Count(c => !c.IsDead);
+            var crowsDead = Day.CrowPool.CrowsCount - crowsAlive;
+            var blackCrows = Day.CrowPool.Crows.Count(c => c.Color == "black");
+            var whiteCrows = Day.CrowPool.Crows.Count(c => c.Color == "white");
 
             result.AppendLine($"Looks like most crows ({max.CrowsCount}) like {max.Crop} fields at {max.Weather} days, when it's {max.PartOfDay} and temperature is {max.Temperature} in time of {max.TimeStamp}");
             result.AppendLine($"And the least crows ({min.CrowsCount}) like {min.Crop} fields at {min.Weather} days, when it's {min.PartOfDay} and temperature is {min.Temperature} in time of {min.TimeStamp}");
+            result.AppendLine($"For now {crowsAlive} crow are alive, and {crowsDead} crows are dead.");
+            result.AppendLine($"From them {blackCrows} crows are black, and {whiteCrows} are white.");
 
             Console.WriteLine(result);
         }

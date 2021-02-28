@@ -10,8 +10,6 @@ namespace CrowCount.Models
     {
         #region Constants
         private const int minDays = 1;
-        // private const int maxCrowsCount = 40;
-        // private const int minCrowsCount = 15;
         private const int maxTemperature = 35;
         private const int minTemperature = -20;
         private const int morning = 7;
